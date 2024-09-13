@@ -64,7 +64,13 @@ const editTodo = (todo: Todo) => {
   showModal.value = true
 }
 
-const deleteTodo = (todo: Todo) => {
+function addNewTodo() {
+  newTodoText.value = ''
+  editingTodo.value = null
+  showModal.value = true
+}
+
+function deleteTodo(todo: Todo) {
   todos.value = todos.value.filter((t) => t.id !== todo.id)
   saveTodos()
 }
