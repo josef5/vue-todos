@@ -79,6 +79,10 @@ const updateTodo = () => {
   saveTodos()
 }
 
+function clearCompletedTodos() {
+  todos.value = todos.value.filter((todo) => !todo.done)
+}
+
 onMounted(() => {
   loadTodos()
 })
