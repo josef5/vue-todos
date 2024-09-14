@@ -11,13 +11,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { useTodoStore } from '@/stores/todoStore'
 import { onBeforeMount, ref } from 'vue'
-import TodoList from './components/TodoList.vue'
-
-interface Todo {
-  id: number
-  text: string
-  done: boolean
-}
 
 const showModal = ref(false)
 const newTodoText = ref('')
