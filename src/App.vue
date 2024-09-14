@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  // DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle
-  // DialogTrigger
 } from '@/components/ui/dialog'
-import { DeleteIcon, EditIcon } from '@/components/ui/icons'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { onMounted, ref } from 'vue'
+import { useTodoStore } from '@/stores/todoStore'
+import { onBeforeMount, ref } from 'vue'
+import TodoList from './components/TodoList.vue'
 
 interface Todo {
   id: number
@@ -21,44 +19,31 @@ interface Todo {
   done: boolean
 }
 
-const todos = ref<Todo[]>([])
 const showModal = ref(false)
 const newTodoText = ref('')
 const editingTodo = ref<Todo | null>(null)
+const todoStore = useTodoStore()
 
-const loadTodos = () => {
-  const savedTodos = localStorage.getItem('todos')
-
-  if (savedTodos) {
-    todos.value = JSON.parse(savedTodos) as Todo[]
-  } else {
-    todos.value = [
-      { id: 1, text: 'foo', done: true },
-      { id: 2, text: 'bar', done: false }
-    ]
-  }
-}
-
-const saveTodos = () => {
-  localStorage.setItem('todos', JSON.stringify(todos.value))
-}
-
-const addTodo = () => {
+function saveTodo() {
   if (newTodoText.value.trim()) {
     if (editingTodo.value) {
       editingTodo.value.text = newTodoText.value
       editingTodo.value = null
     } else {
-      const newTodo: Todo = { id: todos.value.length + 1, text: newTodoText.value, done: false }
-      todos.value.push(newTodo)
+      const newTodo: Todo = {
+        id: todoStore.todos.length + 1,
+        text: newTodoText.value,
+        done: false
+      }
+      todoStore.todos.push(newTodo)
     }
-    saveTodos()
+    todoStore.saveTodos()
     newTodoText.value = ''
     showModal.value = false
   }
 }
 
-const editTodo = (todo: Todo) => {
+function editTodo(todo: Todo) {
   newTodoText.value = todo.text
   editingTodo.value = todo
   showModal.value = true
@@ -70,63 +55,16 @@ function addNewTodo() {
   showModal.value = true
 }
 
-function deleteTodo(todo: Todo) {
-  todos.value = todos.value.filter((t) => t.id !== todo.id)
-  saveTodos()
-}
-
-const updateTodo = () => {
-  saveTodos()
-}
-
-function clearCompletedTodos() {
-  todos.value = todos.value.filter((todo) => !todo.done)
-}
-
-onMounted(() => {
-  loadTodos()
+onBeforeMount(() => {
+  todoStore.loadTodos()
 })
 </script>
 
 <template>
   <div id="tc-vue-template">
     <div class="mx-auto mt-8 w-1/2">
-      Todo bien
-      <ul class="my-8">
-        <li
-          v-for="todo in todos"
-          :key="todo.id"
-          class="my-2 flex items-center justify-between gap-4 rounded-lg border px-3 py-2"
-        >
-          <Checkbox v-model:checked="todo.done" @update:checked="updateTodo" />
-          <Label
-            :style="{ textDecoration: todo.done ? 'line-through' : 'none' }"
-            class="flex-grow leading-snug"
-            >{{ todo.text }}</Label
-          >
-
-          <Button size="icon" variant="outline" class="h-6 w-6" @click="editTodo(todo)"
-            ><EditIcon
-          /></Button>
-          <Button
-            size="icon"
-            variant="outline"
-            class="h-6 w-6 hover:text-red-500"
-            @click="deleteTodo(todo)"
-            ><DeleteIcon
-          /></Button>
-      </li>
-    </ul>
-      <div class="flex gap-2">
-        <Button variant="outline" size="sm" @click="addNewTodo">Add Todo</Button>
-        <Button
-          variant="outline"
-          size="sm"
-          @click="clearCompletedTodos"
-          v-if="todos.filter((todo) => todo.done).length > 0"
-          >Clear Completed</Button
-        >
-      </div>
+      <h1 class="font-bold">Todo bien</h1>
+      <TodoList :todos="todoStore.todos" @add-todo="addNewTodo" @edit-todo="editTodo" />
     </div>
 
     <Dialog :open="showModal" @update:open="showModal = false">
