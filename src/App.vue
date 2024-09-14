@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TodoList from '@/components/TodoList.vue'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -10,6 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useTodoStore } from '@/stores/todoStore'
+import { ModalType } from '@/types'
 import { onBeforeMount, ref } from 'vue'
 
 const showModal = ref(false)
@@ -27,9 +29,12 @@ function saveTodo() {
         text: newTodoText.value,
         done: false
       }
+
       todoStore.todos.push(newTodo)
     }
+
     todoStore.saveTodos()
+
     newTodoText.value = ''
     showModal.value = false
   }
@@ -40,9 +45,9 @@ function launchModal(type: ModalType, todo?: Todo) {
     newTodoText.value = ''
     editingTodo.value = null
   } else if (type === ModalType.Edit) {
-  newTodoText.value = todo.text
-  editingTodo.value = todo
-}
+    newTodoText.value = todo.text
+    editingTodo.value = todo
+  }
 
   showModal.value = true
 }
@@ -75,7 +80,7 @@ onBeforeMount(() => {
 
         <DialogFooter
           ><Button variant="outline" @click="saveTodo">{{
-            editingTodo ? 'Save Changes' : 'Add'
+            editingTodo ? 'Save Changes' : ModalType.Add
           }}</Button></DialogFooter
         >
       </DialogContent>

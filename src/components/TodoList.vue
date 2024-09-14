@@ -2,10 +2,11 @@
 import TodoItem from '@/components/TodoItem.vue'
 import { Button } from '@/components/ui/button'
 import { useTodoStore } from '@/stores/todoStore'
+import { ModalType } from '@/types'
 
 const todoStore = useTodoStore()
 
-const emit = defineEmits(['add-todo', 'edit-todo'])
+const emit = defineEmits(['launch-modal'])
 </script>
 
 <template>
@@ -22,7 +23,9 @@ const emit = defineEmits(['add-todo', 'edit-todo'])
         v-if="todoStore.completedTodosCount > 0"
         @click="todoStore.clearCompletedTodos"
         >Clear Completed</Button
-      ><Button variant="outline" size="sm" @click="emit('add-todo')">Add Todo</Button>
+      ><Button variant="outline" size="sm" @click="emit('launch-modal', ModalType.Add)"
+        >Add Todo</Button
+      >
     </div>
   </div>
 </template>
