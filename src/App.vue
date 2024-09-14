@@ -21,7 +21,6 @@ function saveTodo() {
   if (newTodoText.value.trim()) {
     if (editingTodo.value) {
       editingTodo.value.text = newTodoText.value
-      editingTodo.value = null
     } else {
       const newTodo: Todo = {
         id: todoStore.todos.length + 1,
@@ -36,15 +35,15 @@ function saveTodo() {
   }
 }
 
-function editTodo(todo: Todo) {
+function launchModal(type: ModalType, todo?: Todo) {
+  if (type === ModalType.Add) {
+    newTodoText.value = ''
+    editingTodo.value = null
+  } else if (type === ModalType.Edit) {
   newTodoText.value = todo.text
   editingTodo.value = todo
-  showModal.value = true
 }
 
-function addNewTodo() {
-  newTodoText.value = ''
-  editingTodo.value = null
   showModal.value = true
 }
 
@@ -57,7 +56,7 @@ onBeforeMount(() => {
   <div id="tc-vue-template">
     <div class="mx-auto mt-8 w-1/2">
       <h1 class="font-bold">Todo bien</h1>
-      <TodoList :todos="todoStore.todos" @add-todo="addNewTodo" @edit-todo="editTodo" />
+      <TodoList :todos="todoStore.todos" @launch-modal="launchModal" />
     </div>
 
     <Dialog :open="showModal" @update:open="showModal = false">

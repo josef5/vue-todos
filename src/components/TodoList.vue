@@ -12,7 +12,7 @@ const emit = defineEmits(['add-todo', 'edit-todo'])
   <div class="">
     <ul class="my-8">
       <li v-for="todo in todoStore.todos" :key="todo.id" class="">
-        <TodoItem :todo="todo" @edit-todo="emit('edit-todo', todo)" />
+        <TodoItem :todo="todo" @launch-modal="emit('launch-modal', ModalType.Edit, todo)" />
       </li>
     </ul>
     <div class="flex justify-end gap-2">

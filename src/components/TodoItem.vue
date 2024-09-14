@@ -9,7 +9,7 @@ import { ref, watch } from 'vue'
 const todoStore = useTodoStore()
 
 const props = defineProps<{ todo: Todo }>()
-const emit = defineEmits(['edit-todo'])
+const emit = defineEmits(['launch-modal'])
 const checkboxDone = ref(props.todo.done)
 
 watch(checkboxDone, (newValue) => {
@@ -29,7 +29,7 @@ watch(checkboxDone, (newValue) => {
       size="icon"
       variant="outline"
       class="h-6 w-6 shrink-0"
-      @click="emit('edit-todo', props.todo)"
+      @click="emit('launch-modal', ModalType.Edit, props.todo)"
       ><EditIcon
     /></Button>
     <Button
