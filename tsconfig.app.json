@@ -2,15 +2,21 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "env.d.ts",
+    "global.d.ts",
     "src/**/*",
     "src/**/*.vue",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
     "src/components/ui/label/index.ts",
-    "src/components/ui/checkbox/index.ts"
+    "src/components/ui/checkbox/index.ts",
+    "src/components/TodoItem.vue",
+    "src/components/TodoList.vue"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "noEmit": false,
 
     "baseUrl": ".",
     "paths": {
