@@ -15,6 +15,7 @@ const emit = defineEmits(['launch-modal'])
       <li v-for="todo in todoStore.todos" :key="todo.id" class="">
         <TodoItem :todo="todo" @launch-modal="emit('launch-modal', ModalType.Edit, todo)" />
       </li>
+      <p v-if="todoStore.todosCount === 0" class="text-center text-gray-500">No todos found</p>
     </ul>
     <div class="flex justify-end gap-2">
       <Button
