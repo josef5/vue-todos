@@ -9,6 +9,8 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",
+    "predeploy": "vite build",
+    "deploy": "gh-pages -d dist",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
@@ -17,6 +19,7 @@
     "@vueuse/core": "^11.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "gh-pages": "^6.1.1",
     "lucide-vue-next": "^0.439.0",
     "pinia": "^2.1.7",
     "radix-vue": "^1.9.5",
