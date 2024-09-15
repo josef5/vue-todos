@@ -9,7 +9,6 @@ interface Todo {
 
 export const useTodoStore = defineStore('todos', () => {
   const todos = ref<Todo[]>([])
-  const newTodoText = ref('')
   const editingTodo = ref<Todo | null>(null)
   const showModal = ref(false)
 
@@ -26,34 +25,42 @@ export const useTodoStore = defineStore('todos', () => {
     }
   }
 
+  function getNewId() {
+    return todos.value.reduce((max, todo) => Math.max(max, todo.id), 0) + 1
+  }
+
+  const completedTodosCount = computed(() => {
+    return todos.value.filter((todo) => todo.done).length
+  })
+
   function saveTodos() {
     localStorage.setItem('todos', JSON.stringify(todos.value))
   }
 
-  function addTodo() {
-    if (editingTodo.value) {
-      const index = todos.value.findIndex((t) => t.id === editingTodo.value!.id)
-      if (index !== -1) {
-        todos.value[index].text = newTodoText.value
-      }
-    } else {
-      todos.value.push({ id: Date.now(), text: newTodoText.value, done: false })
+  function addNewTodo(newText: string) {
+    const newTodo: Todo = {
+      id: getNewId(),
+      text: newText,
+      done: false
     }
+
+    addTodo(newTodo)
+  }
+
+  function addTodo(todo: Todo) {
+    todos.value.push(todo)
+
     saveTodos()
-    newTodoText.value = ''
-    showModal.value = false
   }
 
   function editTodo(todo: Todo) {
-    newTodoText.value = todo.text
-    editingTodo.value = todo
-    showModal.value = true
-  }
+    const index = todos.value.findIndex((t) => t.id === todo.id)
 
-  function addNewTodo() {
-    newTodoText.value = ''
-    editingTodo.value = null
-    showModal.value = true
+    if (index !== -1) {
+      todos.value[index] = todo
+    }
+
+    saveTodos()
   }
 
   function deleteTodo(todo: Todo) {
@@ -62,35 +69,22 @@ export const useTodoStore = defineStore('todos', () => {
     saveTodos()
   }
 
-  function updateTodo(todo: Todo) {
-    const index = todos.value.findIndex((t) => t.id === todo.id)
-    if (index !== -1) {
-      todos.value[index] = todo
-    }
+  function clearCompletedTodos() {
+    todos.value = todos.value.filter((todo) => !todo.done)
 
     saveTodos()
   }
 
-  const completedTodosCount = computed(() => {
-    return todos.value.filter((todo) => todo.done).length
-  })
-
-  function clearCompletedTodos() {
-    todos.value = todos.value.filter((todo) => !todo.done)
-  }
-
   return {
     todos,
-    newTodoText,
     editingTodo,
     showModal,
     loadTodos,
     saveTodos,
     addTodo,
-    editTodo,
     addNewTodo,
     deleteTodo,
-    updateTodo,
+    editTodo,
     completedTodosCount,
     clearCompletedTodos
   }
