@@ -1,30 +1,20 @@
 <script setup lang="ts">
-import TodoList from '@/components/TodoList.vue'
 import Modal from '@/components/Modal.vue'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  // DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
+import TodoList from '@/components/TodoList.vue'
 import { useTodoStore } from '@/stores/todoStore'
 import { type Todo, ModalType } from '@/types'
 import { onBeforeMount, ref } from 'vue'
 
 const showModal = ref(false)
 const modalType = ref<ModalType>(ModalType.Add)
-const editingTodo = ref<Todo | null>(null)
+const editingTodo = ref<Todo | null | undefined>(null)
 const todoStore = useTodoStore()
 
 function launchModal(type: ModalType, todo?: Todo) {
   if (type === ModalType.Add) {
     editingTodo.value = null
   } else if (type === ModalType.Edit) {
-    editingTodo.value = todo
+    editingTodo.value = todo ?? null
   }
 
   modalType.value = type
@@ -47,7 +37,7 @@ onBeforeMount(() => {
         :open="showModal"
         :type="modalType"
         @update:open="showModal = false"
-        :todo="editingTodo"
+        :todo="editingTodo ?? undefined"
       />
     </div>
   </main>
