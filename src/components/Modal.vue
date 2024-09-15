@@ -41,7 +41,7 @@ const labels = computed(() => {
 function handleSubmit() {
   if (newTodoText.value.trim()) {
     if (props.type === ModalType.Edit) {
-      todoStore.editTodo({ ...props.todo!, text: newTodoText.value })
+      todoStore.updateTodo({ ...props.todo!, text: newTodoText.value })
     } else {
       todoStore.addNewTodo(newTodoText.value)
     }

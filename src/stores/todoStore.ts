@@ -53,7 +53,7 @@ export const useTodoStore = defineStore('todos', () => {
     saveTodos()
   }
 
-  function editTodo(todo: Todo) {
+  function updateTodo(todo: Todo) {
     const index = todos.value.findIndex((t) => t.id === todo.id)
 
     if (index !== -1) {
@@ -84,7 +84,7 @@ export const useTodoStore = defineStore('todos', () => {
     addTodo,
     addNewTodo,
     deleteTodo,
-    editTodo,
+    updateTodo,
     completedTodosCount,
     clearCompletedTodos
   }
