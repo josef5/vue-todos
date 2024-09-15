@@ -29,6 +29,10 @@ export const useTodoStore = defineStore('todos', () => {
     return todos.value.reduce((max, todo) => Math.max(max, todo.id), 0) + 1
   }
 
+  const todosCount = computed(() => {
+    return todos.value.length
+  })
+
   const completedTodosCount = computed(() => {
     return todos.value.filter((todo) => todo.done).length
   })
@@ -77,6 +81,8 @@ export const useTodoStore = defineStore('todos', () => {
 
   return {
     todos,
+    todosCount,
+    completedTodosCount,
     editingTodo,
     showModal,
     loadTodos,
@@ -85,7 +91,6 @@ export const useTodoStore = defineStore('todos', () => {
     addNewTodo,
     deleteTodo,
     updateTodo,
-    completedTodosCount,
     clearCompletedTodos
   }
 })
