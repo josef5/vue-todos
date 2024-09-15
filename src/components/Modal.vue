@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  // DialogDescription,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle
@@ -56,10 +56,11 @@ function handleSubmit() {
   <Dialog :open="props.open" @update:open="emit('update:open', false)">
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>COMPONENT {{ labels.title }}</DialogTitle>
-        <!-- <DialogDescription>
-            Add or edit a todo here. Click save when you're done.
-          </DialogDescription> -->
+        <DialogTitle>{{ labels.title }}</DialogTitle>
+        <DialogDescription>
+          {{ type === ModalType.Edit ? 'Edit' : 'Add' }} a todo here. Click {{ labels.button }} when
+          you're done.
+        </DialogDescription>
         <div class="grid gap-4 py-4">
           <div class="grid grid-cols-4 items-center gap-4">
             <Input id="todo-text" v-model="newTodoText" class="col-span-4" />
