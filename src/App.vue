@@ -37,18 +37,20 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div id="tc-vue-template">
-    <div class="mx-auto mt-8 w-1/2">
-      <h1 class="font-bold">Todo bien</h1>
-      <TodoList :todos="todoStore.todos" @launch-modal="launchModal" />
+  <main>
+    <div id="tc-vue-template">
+      <div class="mx-auto mt-8 w-1/2">
+        <h1 class="font-bold">Todo bien</h1>
+        <TodoList :todos="todoStore.todos" @launch-modal="launchModal" />
+      </div>
+      <Modal
+        :open="showModal"
+        :type="modalType"
+        @update:open="showModal = false"
+        :todo="editingTodo"
+      />
     </div>
-    <Modal
-      :open="showModal"
-      :type="modalType"
-      @update:open="showModal = false"
-      :todo="editingTodo"
-    />
-  </div>
+  </main>
 </template>
 
 <style scoped></style>
