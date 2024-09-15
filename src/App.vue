@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useTodoStore } from '@/stores/todoStore'
-import { ModalType } from '@/types'
+import { type Todo, ModalType } from '@/types'
 import { onBeforeMount, ref } from 'vue'
 
 const showModal = ref(false)

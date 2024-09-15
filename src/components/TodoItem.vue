@@ -4,7 +4,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { DeleteIcon, EditIcon } from '@/components/ui/icons'
 import { Label } from '@/components/ui/label'
 import { useTodoStore } from '@/stores/todoStore'
-import { ModalType } from '@/types'
+import { type Todo, ModalType } from '@/types'
 import { ref, watch } from 'vue'
 
 const todoStore = useTodoStore()

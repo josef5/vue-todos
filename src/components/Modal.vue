@@ -9,9 +9,9 @@ import {
   DialogTitle
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { ModalType } from '@/types'
-import { ref, computed, watch } from 'vue'
 import { useTodoStore } from '@/stores/todoStore'
+import { type Todo, ModalType } from '@/types'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
   type: ModalType
