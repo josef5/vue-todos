@@ -9,16 +9,13 @@ import tailwind from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/vue-todos/',
   css: {
     postcss: {
       plugins: [tailwind(), autoprefixer()]
     }
   },
-  plugins: [
-    vue(),
-    vueJsx(),
-    vueDevTools(),
-  ],
+  plugins: [vue(), vueJsx(), vueDevTools()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
