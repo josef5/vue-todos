@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TodoList from '@/components/TodoList.vue'
+import Modal from '@/components/Modal.vue'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -15,40 +16,18 @@ import { ModalType } from '@/types'
 import { onBeforeMount, ref } from 'vue'
 
 const showModal = ref(false)
-const newTodoText = ref('')
+const modalType = ref<ModalType>(ModalType.Add)
 const editingTodo = ref<Todo | null>(null)
 const todoStore = useTodoStore()
 
-function saveTodo() {
-  if (newTodoText.value.trim()) {
-    if (editingTodo.value) {
-      editingTodo.value.text = newTodoText.value
-    } else {
-      const newTodo: Todo = {
-        id: todoStore.todos.length + 1,
-        text: newTodoText.value,
-        done: false
-      }
-
-      todoStore.todos.push(newTodo)
-    }
-
-    todoStore.saveTodos()
-
-    newTodoText.value = ''
-    showModal.value = false
-  }
-}
-
 function launchModal(type: ModalType, todo?: Todo) {
   if (type === ModalType.Add) {
-    newTodoText.value = ''
     editingTodo.value = null
   } else if (type === ModalType.Edit) {
-    newTodoText.value = todo.text
     editingTodo.value = todo
   }
 
+  modalType.value = type
   showModal.value = true
 }
 
@@ -63,28 +42,12 @@ onBeforeMount(() => {
       <h1 class="font-bold">Todo bien</h1>
       <TodoList :todos="todoStore.todos" @launch-modal="launchModal" />
     </div>
-
-    <Dialog :open="showModal" @update:open="showModal = false">
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{{ editingTodo ? 'Edit Todo' : 'Add New Todo' }}</DialogTitle>
-          <!-- <DialogDescription>
-            Add or edit a todo here. Click save when you're done.
-          </DialogDescription> -->
-          <div class="grid gap-4 py-4">
-            <div class="grid grid-cols-4 items-center gap-4">
-              <Input id="todo-text" v-model="newTodoText" class="col-span-4" />
-            </div>
-          </div>
-        </DialogHeader>
-
-        <DialogFooter
-          ><Button variant="outline" @click="saveTodo">{{
-            editingTodo ? 'Save Changes' : ModalType.Add
-          }}</Button></DialogFooter
-        >
-      </DialogContent>
-    </Dialog>
+    <Modal
+      :open="showModal"
+      :type="modalType"
+      @update:open="showModal = false"
+      :todo="editingTodo"
+    />
   </div>
 </template>
 
